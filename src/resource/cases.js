@@ -76,6 +76,45 @@ county_unemployment:
             "actions": false
         }
     }
-}`
+}`,
+georgia_pctBach:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "background": "#F3F8FB",
+    "data": {
+        "values": "pct",
+        "format": {
+            "property": "georgia_pctBach"
+        }
+    },
+    "mark": "geoshape",
+    "projection": {
+        "type": "albersUsa"
+    },
+    "encoding": {
+        "stroke": {
+            "value": "black"
+        },
+        "color": {
+            "field": "properties.PctBach",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#ffffff","#000000"],
+                "type": "threshold",
+                "domain": [0.05]
+            },
+            "legend": {
+                "title": null
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
 
 };

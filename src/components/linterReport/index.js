@@ -112,9 +112,11 @@ class LinterReport extends Component {
          let GVFsum = 0;
          let methodNum = 0;
          let classification_methods_title = selectedCaseData.features.classification_methods_title;
+         console.log(classification_methods_title);
          classification_methods_title.forEach((element, i)=>{
              let keyName = selectedCaseData.features.classification_methods[i];
              let currentFeature = selectedCaseData.features[keyName];
+             console.log(keyName, currentFeature);
              let featureWithCurrentK = currentFeature.filter(element => element.k === k);
              
              if(featureWithCurrentK.length > 0){

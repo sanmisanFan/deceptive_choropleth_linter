@@ -21,6 +21,10 @@ import state_education_features from './resource/case1_state_edu/state_education
 import us10m from './resource/us10m.json';
 import unemployment from './resource/unemployment.json';
 
+// import case 5 data -> State of Georgia Percentage College Degree 'PctBach'
+import georgia_pctBach from './resource/case5_georgia_pctBach/georgia_pctBach.json';
+import georgia_pctBachFeatures from './resource/case5_georgia_pctBach/georgia_pctBach_features.json';
+
 /** import case scripts */
 import { case_scripts } from './resource/cases';
 
@@ -28,7 +32,7 @@ import { case_scripts } from './resource/cases';
 class App extends Component {
   constructor(props){
     super(props);
-    
+
     this.dataset = {
       state_education:{
         geo: state_education,
@@ -38,13 +42,16 @@ class App extends Component {
         geo: us10m,
         data: unemployment,
         features: null
+      },
+      georgia_pctBach:{
+        geo: georgia_pctBach,
+        features: georgia_pctBachFeatures
       }
     };
 
     this.initCaseObj = JSON.parse(case_scripts["state_education"]);
     this.initCaseObjString = JSON.stringify(this.initCaseObj, null, 4);
 
-    
     this.currentMapFeature = {
       k: null,
       color_scheme: null,
@@ -55,16 +62,16 @@ class App extends Component {
     };
 
     this.state = {
-      mapDataList: ['state_education','county_unemployment'],
+      mapDataList: ['state_education','county_unemployment','georgia_pctBach'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
-          'Sequential: viridis', 
-          'Sequential: reds', 
-          'Sequential: greens', 
+          'Sequential: viridis',
+          'Sequential: reds',
+          'Sequential: greens',
           'Sequential: YlGnBu',
           'Sequential: OrRd',
-          'Diverging: RdBu', 
+          'Diverging: RdBu',
           'Diverging: PiYG',
         ],
 
@@ -222,7 +229,7 @@ class App extends Component {
       //vegaLiteSpec: specTemp,
       rawScript: JSON.stringify(specTemp, null, 4)
     });
-    
+
   };
 
   // When click the "Run Script" btn
@@ -235,7 +242,7 @@ class App extends Component {
     });
     //parse the string spec into real Vega spec
     try{
-      let changedScript = JSON.parse(this.state.rawScript);  
+      let changedScript = JSON.parse(this.state.rawScript);
       this.setState({
         vegaLiteSpec: changedScript
       });
@@ -296,7 +303,7 @@ class App extends Component {
         hasHardRuleViolation: true,
         hardRuleMsg: hardRuleMsgList
       });
-      
+
     }else{ // json syntax error
       hardRuleMsg.title = "SyntaxError: ";
       hardRuleMsg.type = "syntax";
@@ -477,7 +484,7 @@ class App extends Component {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
           class_breaks: breaks,
           data_list: this.state.selectedCaseData.features.data_list,
           case_name: this.state.selectRawCase,
@@ -489,7 +496,7 @@ class App extends Component {
         .then(json => {
             const responseMsg = json.msg;
             const measures = json.measures;
-            
+
             console.log(measures);
           })
           .catch(error => {
@@ -497,7 +504,7 @@ class App extends Component {
           });
 
     //return requestOptions;
-    
+
   };
 
   extractMapFeatures = (spec) => {
@@ -534,7 +541,7 @@ class App extends Component {
 
     // return extracted map features
     return mapFeature;
-  }; 
+  };
 
   /** Render components for the main layout */
   render(){
@@ -545,7 +552,7 @@ class App extends Component {
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
     //console.log(hardRuleViolation);
     //console.log(hasHardRuleViolation);
-    let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false; 
+    let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false;
     let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
 
     //TODO: Soft rule check
@@ -637,7 +644,7 @@ class App extends Component {
               <Col span={9}>
                 <Row gutter={[6,6]}>
                   <Col span={24}>
-                    <SupportMapView 
+                    <SupportMapView
                       selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
                       vegaLiteSpec={this.state.vegaLiteSpec}
@@ -663,7 +670,7 @@ class App extends Component {
                       onCurrentColorChange={this.handleCurrentColorChange}
                       onCurrentMeasuresChange={this.handleCurrentMeasuresChange}
                     />
-                    
+
                   </Col>
                 </Row>
               </Col>
